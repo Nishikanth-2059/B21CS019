@@ -6,18 +6,41 @@ for (let i = 0; i<10; i++) {
     const num = Math.floor(Math.random() * 100) + 1;
     randn.push(num);
 }
-number.get('/',  (req, res) => {
+number.get('/numbers/even', (req, res) => {
     const nume = [];
-    const numo = [];
-    for(let i = 0; i<10 ; i++){
-        if(randn[i] % 2 === 0){
+    var n = 0, avg = 0;
+    for(let i=0; i<10 ; i++){
+        if(randn[i]%2 === 0){
             nume.push(randn[i]);
-        }
-        else{
-            numo.push(randn[i]);
+            avg += randn[i];
+            n++;
         }
     }
-    const result = {even: nume, odd: numo};
+    avg /= n;
+    const result = {orginalNumbers: randn, evenNumbers: nume, average: avg};
+    res.json(result);
+});
+number.get('/numbers/odd', (req, res) => {
+    const numo = [];
+    var n = 0, avg = 0;
+    for(let i=0; i<10 ; i++){
+        if(randn[i]%2 != 0){
+            numo.push(randn[i]);
+            avg += randn[i];
+            n++;
+        }
+    }
+    avg /= n;
+    const result = {orginalNumbers: randn, evenNumbers: numo, average: avg};
+    res.json(result);
+});
+number.get('/numbers',  (req, res) => {
+    var avg = 0;
+    for(let i=0; i<10 ; i++){
+        avg += randn[i];
+    }
+    avg /= 10;
+    const result = {randomNumbers: randn, average: avg};
     res.json(result);
     
 });
